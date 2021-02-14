@@ -6,7 +6,7 @@ El algoritmo asume que todos los puntos se guardan con un tiempo de muestreo con
 
 El tiempo de muestreo es calculado con la fórmula:
 
-* dt = (tiempo inicial - tiempo final) / número de puntos de la ruta original
+* dt = (tiempo final - tiempo inicial) / número de puntos de la ruta original
 
 ## Parámetros de entrada
 

@@ -2,6 +2,9 @@ import gpxpy.gpx
 import pandas as pd
 from datetime import datetime
 import numpy as np
+from matplotlib import pylab as plt
+import seaborn as sns
+sns.set()
 
 # Leer el archivo gpx:
 # Este es el archivo de la ruta original del recorrido que hice con Franzi corriendo.
@@ -73,3 +76,19 @@ for idx in df.index:
 with open('myfirstroute.gpx', "w") as f:
     f.write(gpx.to_xml())
     print("Archivo gpx generado con éxito.")
+
+# Diagramas sobre tiempo
+
+t = df['time'].astype('datetime64[ns]')
+
+h=t.dt.hour+t.dt.minute/60.
+
+plt.plot(h, df['elevation'])
+
+
+plt.xlabel(r'{0}'.format('time in hours'), fontsize=15)
+
+
+plt.ylabel(r'{0}'.format('Elevation in m'), fontsize=15)
+
+plt.savefig('elevation.svg', dpi=400) 

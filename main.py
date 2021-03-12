@@ -6,6 +6,17 @@ from matplotlib import pylab as plt
 import seaborn as sns
 sns.set()
 
+# funciones preliminarias
+
+def graph(x,y,name):
+    plt.clf()
+    plt.plot(x, y, label=name)
+    plt.xlabel(r'{0}'.format('time in hours'), fontsize=15)
+    plt.ylabel(r'{0}'.format('Elevation in m'), fontsize=15)
+    plt.legend(loc='best')
+    plt.savefig('elevation_{0}.svg'.format(name), dpi=400) 
+    return
+
 # Leer el archivo gpx:
 # Este es el archivo de la ruta original del recorrido que hice con Franzi corriendo.
 gpx_file = open('activity_6266217162.gpx', 'r')
@@ -47,8 +58,15 @@ for i in range(0, nr_points):
 # Agregando los nuevos tiempos al DataFrame
 df['zoufine_time'] = new_datetimes
 
+t_org = df['time'].astype('datetime64[ns]')
+
+h_org=t_org.dt.hour+t_org.dt.minute/60.
+
+
 # Eliminando la columna time, ya que no es necesaria
 df = df.drop(columns="time")
+
+
 
 # Renombrando la columna zoufine_time en time
 df = df.rename(columns={"zoufine_time": "time"})
@@ -77,18 +95,13 @@ with open('myfirstroute.gpx', "w") as f:
     f.write(gpx.to_xml())
     print("Archivo gpx generado con éxito.")
 
-# Diagramas sobre tiempo
+# diagramas sobre tiempo
 
 t = df['time'].astype('datetime64[ns]')
 
 h=t.dt.hour+t.dt.minute/60.
 
-plt.plot(h, df['elevation'])
+graph(h,df['elevation'].values,'new')
 
+graph(h_org,df['elevation'].values,'org')
 
-plt.xlabel(r'{0}'.format('time in hours'), fontsize=15)
-
-
-plt.ylabel(r'{0}'.format('Elevation in m'), fontsize=15)
-
-plt.savefig('elevation.svg', dpi=400) 
